@@ -7,6 +7,7 @@ package z3d.renderer
 	import z3d.constants.PVWMatrixConstant;
 	import z3d.context.Context3DContext;
 	import z3d.context.StageContext;
+	import z3d.examples.skinning.constants.RotatingMatrixConstant;
 	import z3d.geometry.TriMesh;
 	import z3d.scenegraph.Camera;
 	/**
@@ -47,11 +48,21 @@ package z3d.renderer
 			{
 				_context3D.setTextureAt( 1, m.texture );
 				_context3D.setProgram( m.program );
-				_context3D.setVertexBufferAt( 0, m.vertexBuffer, 0, Context3DVertexBufferFormat.FLOAT_3 );
-				_context3D.setVertexBufferAt( 1, m.vertexBuffer, 3, Context3DVertexBufferFormat.FLOAT_2 );
+				_context3D.setVertexBufferAt( 0, m.vertexBuffer, 0, Context3DVertexBufferFormat.FLOAT_3 ); // xyz
+				_context3D.setVertexBufferAt( 1, m.vertexBuffer, 3, Context3DVertexBufferFormat.FLOAT_2 ); // uv
+				_context3D.setVertexBufferAt( 2, m.vertexBuffer, 5, Context3DVertexBufferFormat.FLOAT_2 ); // weights
+				_context3D.setVertexBufferAt( 3, m.vertexBuffer, 7, Context3DVertexBufferFormat.FLOAT_2 ); // bone indices
 				
-				var constant: PVWMatrixConstant = new PVWMatrixConstant( m, _camera );
-				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 0, constant.data, true );
+				var pvw: PVWMatrixConstant = new PVWMatrixConstant( m, _camera );
+				var bone1: RotatingMatrixConstant = new RotatingMatrixConstant( m, _camera );
+				var bone2: RotatingMatrixConstant = new RotatingMatrixConstant( m, _camera );
+				bone1.data.appendTranslation( -0.5, 0, 0 );
+				bone2.data.appendTranslation( 0.5, 0, 0 );
+				
+				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 0, pvw.data, true );
+				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 4, bone1.data, true );
+				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 8, bone2.data, true );
+				
 				
 				_context3D.drawTriangles( m.indexBuffer );
 				
