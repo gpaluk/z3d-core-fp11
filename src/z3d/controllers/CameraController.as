@@ -25,6 +25,8 @@ package z3d.controllers
 		
 		private var _leftPressed: Boolean;
 		private var _rightPressed: Boolean;
+		private var _upPressed: Boolean;
+		private var _downPressed: Boolean;
 		
 		public function CameraController( ) 
 		{
@@ -42,6 +44,8 @@ package z3d.controllers
 			
 			e.keyCode == Keyboard.LEFT ? _leftPressed = true : null;
 			e.keyCode == Keyboard.RIGHT ? _rightPressed = true : null;
+			e.keyCode == Keyboard.UP ? _upPressed = true : null;
+			e.keyCode == Keyboard.DOWN ? _downPressed = true : null;
 		}
 		
 		protected function onKeyUp( e: KeyboardEvent ): void
@@ -53,6 +57,8 @@ package z3d.controllers
 			
 			e.keyCode == Keyboard.LEFT ? _leftPressed = false : null;
 			e.keyCode == Keyboard.RIGHT ? _rightPressed = false : null;
+			e.keyCode == Keyboard.UP ? _upPressed = false : null;
+			e.keyCode == Keyboard.DOWN ? _downPressed = false : null;
 		}
 		
 		override public function update(dt:Number):void 
@@ -64,6 +70,8 @@ package z3d.controllers
 			
 			_leftPressed ? cameraNode.camera.view.appendRotation( ROTATION_SPEED * dt, new Vector3D(0, 1, 0 ) ) : null;
 			_rightPressed ? cameraNode.camera.view..appendRotation( -(ROTATION_SPEED * dt), new Vector3D(0, 1, 0 ) ) : null;
+			_upPressed ? cameraNode.camera.view.appendRotation( ROTATION_SPEED * dt, new Vector3D(1, 0, 0 ) ) : null;
+			_downPressed ? cameraNode.camera.view..appendRotation( -(ROTATION_SPEED * dt), new Vector3D(1, 0, 0 ) ) : null;
 		}
 		
 		public function get cameraNode(): CameraNode
