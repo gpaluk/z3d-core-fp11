@@ -21,7 +21,7 @@ package z3d.geometry
 		
 		public static const BYTES_PER_FLOAT: int = 4;
 		public static const BYTES_PER_SHORT: int = 2;
-		public static const STRIDE: int = 5;
+		public static const STRIDE: int = 9;
 		
 		protected var _texture: ByteArray;
 		

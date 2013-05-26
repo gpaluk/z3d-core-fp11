@@ -4,6 +4,7 @@ package z3d.renderer
 	import flash.display3D.Context3D;
 	import flash.display3D.Context3DProgramType;
 	import flash.display3D.Context3DVertexBufferFormat;
+	import flash.geom.Matrix3D;
 	import z3d.constants.PVWMatrixConstant;
 	import z3d.context.Context3DContext;
 	import z3d.context.StageContext;
@@ -46,7 +47,7 @@ package z3d.renderer
 			_context3D.clear( 0, 0, 0, 0 );
 			for each( var m: TriMesh in _renderableObjects )
 			{
-				_context3D.setTextureAt( 1, m.texture );
+				_context3D.setTextureAt( 0, m.texture );
 				_context3D.setProgram( m.program );
 				_context3D.setVertexBufferAt( 0, m.vertexBuffer, 0, Context3DVertexBufferFormat.FLOAT_3 ); // xyz
 				_context3D.setVertexBufferAt( 1, m.vertexBuffer, 3, Context3DVertexBufferFormat.FLOAT_2 ); // uv
@@ -56,18 +57,18 @@ package z3d.renderer
 				var pvw: PVWMatrixConstant = new PVWMatrixConstant( m, _camera );
 				var bone1: RotatingMatrixConstant = new RotatingMatrixConstant( m, _camera );
 				var bone2: RotatingMatrixConstant = new RotatingMatrixConstant( m, _camera );
-				bone1.data.appendTranslation( -0.5, 0, 0 );
-				bone2.data.appendTranslation( 0.5, 0, 0 );
+				//bone1.data.appendTranslation( -1, 0, 0 );
+				//bone2.data.appendTranslation( 0.5, 0, 0 );
 				
 				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 0, pvw.data, true );
 				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 4, bone1.data, true );
-				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 8, bone2.data, true );
-				
+				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 8, new Matrix3D(), true );
+				_context3D.setProgramConstantsFromVector( Context3DProgramType.VERTEX, 12, Vector.<Number>( [ 1, 0, 0, 0 ] ) );
 				
 				_context3D.drawTriangles( m.indexBuffer );
 				
 				_context3D.setProgram( null );
-				_context3D.setTextureAt( 1, null );
+				_context3D.setTextureAt( 0, null );
 			}
 			_context3D.present();
 		}
