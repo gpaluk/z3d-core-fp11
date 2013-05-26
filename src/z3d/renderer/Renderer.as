@@ -57,12 +57,12 @@ package z3d.renderer
 				var pvw: PVWMatrixConstant = new PVWMatrixConstant( m, _camera );
 				var bone1: RotatingMatrixConstant = new RotatingMatrixConstant( m, _camera );
 				var bone2: RotatingMatrixConstant = new RotatingMatrixConstant( m, _camera );
-				//bone1.data.appendTranslation( -1, 0, 0 );
+				//bone1.data.appendTranslation( -0.5, 0, 0 );
 				//bone2.data.appendTranslation( 0.5, 0, 0 );
 				
 				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 0, pvw.data, true );
 				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 4, bone1.data, true );
-				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 8, new Matrix3D(), true );
+				_context3D.setProgramConstantsFromMatrix( Context3DProgramType.VERTEX, 8, bone2.data, true );
 				_context3D.setProgramConstantsFromVector( Context3DProgramType.VERTEX, 12, Vector.<Number>( [ 1, 0, 0, 0 ] ) );
 				
 				_context3D.drawTriangles( m.indexBuffer );
